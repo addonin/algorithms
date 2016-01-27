@@ -13,7 +13,7 @@ public class Percolation {
     int virtualTopFlatIndex;
     int virtualBottomFlatIndex;
     int[][] sites;
-    WeightedQuickUnionUF weightedQuickUnionUF;
+    WeightedQuickUnionUF uf;
 
     public Percolation(int N) {
         if (N <= 0) throw new IndexOutOfBoundsException();
@@ -21,48 +21,52 @@ public class Percolation {
         this.virtualTopFlatIndex = N;
         this.virtualBottomFlatIndex = N * (N + 1);
         this.sites = new int[N + 1][N + 1];
-        this.weightedQuickUnionUF = new WeightedQuickUnionUF((N + 1) * (N + 1));
+        this.uf = new WeightedQuickUnionUF((N + 1) * (N + 1));
+        sites[N][0] = 1; //open virtual top
+        sites[0][N] = 1; //open virtual bottom
     }
 
     public static void main(String[] args) {
         int N = 5;
         Percolation percolation = new Percolation(N);
         while (!percolation.percolates()) {
+
             int i = StdRandom.uniform(1, N + 1);
             int j = StdRandom.uniform(1, N + 1);
-            percolation.open(i, j);
+
             for (int k = 1; k <= N; k++) {
                 for (int l = 1; l <= N; l++) {
-                    System.out.print(percolation.sites[k][l]);
+                    System.out.print(percolation.sites[l][k]);
                 }
                 System.out.println("");
             }
             System.out.println("");
+
+            percolation.open(i, j);
         }
     }
 
     public void open(int i, int j) {
         validate(i, j);
-        if (isOpen(i, j) || isFull(i, j)) return;
+        if (isOpen(i, j)) return;
         sites[i][j] = 1;
         int currentFlatIndex = ijToFlatIndex(i, j);
         if (isTopRow(j)) {
-            weightedQuickUnionUF.union(currentFlatIndex, virtualTopFlatIndex);
+            uf.union(currentFlatIndex, virtualTopFlatIndex);
         } else if (isBottomRow(j)) {
-            weightedQuickUnionUF.union(currentFlatIndex, virtualBottomFlatIndex);
-        } else {
-            if (hasUpstairsNeighbour(i, j)) {
-                weightedQuickUnionUF.union(currentFlatIndex, upstairNeighbourFlatIndex(i, j));
-            }
-            if (hasDownstairsNeighbour(i, j)) {
-                weightedQuickUnionUF.union(currentFlatIndex, downstairNeighbourFlatIndex(i, j));
-            }
-            if (hasLeftNeighbour(i, j)) {
-                weightedQuickUnionUF.union(currentFlatIndex, leftNeighbourFlatIndex(i, j));
-            }
-            if (hasRightNeighbour(i, j)) {
-                weightedQuickUnionUF.union(currentFlatIndex, rightNeighbourFlatIndex(i, j));
-            }
+            uf.union(currentFlatIndex, virtualBottomFlatIndex);
+        }
+        if (hasUpstairsNeighbour(i, j)) {
+            uf.union(currentFlatIndex, upstairNeighbourFlatIndex(i, j));
+        }
+        if (hasDownstairsNeighbour(i, j)) {
+            uf.union(currentFlatIndex, downstairNeighbourFlatIndex(i, j));
+        }
+        if (hasLeftNeighbour(i, j)) {
+            uf.union(currentFlatIndex, leftNeighbourFlatIndex(i, j));
+        }
+        if (hasRightNeighbour(i, j)) {
+            uf.union(currentFlatIndex, rightNeighbourFlatIndex(i, j));
         }
     }
 
@@ -74,12 +78,12 @@ public class Percolation {
     public boolean isFull(int i, int j) {
         validate(i, j);
         int flatIndex = ijToFlatIndex(i, j);
-        return weightedQuickUnionUF.connected(flatIndex, virtualTopFlatIndex) ||
-                weightedQuickUnionUF.connected(flatIndex, virtualBottomFlatIndex);
+        return uf.connected(flatIndex, virtualTopFlatIndex) ||
+                uf.connected(flatIndex, virtualBottomFlatIndex);
     }
 
     public boolean percolates() {
-        return weightedQuickUnionUF.connected(virtualTopFlatIndex, virtualBottomFlatIndex);
+        return uf.connected(virtualTopFlatIndex, virtualBottomFlatIndex);
     }
 
     void validate(int i, int j) {
@@ -103,7 +107,7 @@ public class Percolation {
     }
 
     private boolean hasDownstairsNeighbour(int i, int j) {
-        return j > N && isOpen(i, j + 1);
+        return j < N && isOpen(i, j + 1);
     }
 
     private boolean hasLeftNeighbour(int i, int j) {
