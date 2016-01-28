@@ -1,5 +1,6 @@
 package part1.week1.assignments.percolation;
 
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 /**
@@ -8,9 +9,10 @@ import edu.princeton.cs.algs4.StdStats;
  */
 public class PercolationStats {
 
+    private static int[] openFractions;
+
     private int N;
     private int T;
-    private int[] openFractions;
 
     public PercolationStats(int N, int T) {
         if (N <= 0 || T <= 0) throw new IllegalArgumentException();
@@ -24,19 +26,52 @@ public class PercolationStats {
     }
 
     public double stddev() {
-        return 0;
+        double counter = 0;
+        double mean = mean();
+        for (int i = 0; i < T; i++) {
+            counter += Math.pow((openFractions[i] - mean), 2);
+        }
+        return Math.sqrt(counter / (T - 1));
     }
 
     public double confidenceLo() {
-        return 0;
+        double mean = mean();
+        double stddev = stddev();
+        return mean - (1.96 * stddev) / Math.sqrt(T);
     }
 
     public double confidenceHi() {
-        return 0;
+        double mean = mean();
+        double stddev = stddev();
+        return mean + (1.96 * stddev) / Math.sqrt(T);
     }
 
     public static void main(String[] args) {
-        PercolationStats stats = new PercolationStats(10, 10);
 
+        int N = Integer.parseInt(args[0]);
+        int T = Integer.parseInt(args[0]);
+        PercolationStats stats = new PercolationStats(N, T);
+
+        for (int k = 0; k < T; k++) {
+            Percolation percolation = new Percolation(N);
+            while (!percolation.percolates()) {
+                int i = StdRandom.uniform(1, N + 1);
+                int j = StdRandom.uniform(1, N + 1);
+                percolation.open(i, j);
+            }
+            int counter = 0;
+            for (int i = 1; i <= N; i++) {
+                for (int j = 1; j <= N; j++) {
+                    if (percolation.isFull(i, j) || percolation.isOpen(i, j)) {
+                        counter++;
+                    }
+                }
+            }
+            openFractions[k] = counter;
+        }
+
+        System.out.println("mean                    = " + stats.mean());
+        System.out.println("stddev                  = " + stats.stddev());
+        System.out.println("95% confidence interval = " + stats.confidenceLo() + ", " + stats.confidenceHi());
     }
 }
