@@ -13,7 +13,6 @@
 
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
-import part1.week1.assignments.percolation.Percolation;
 
 public class InteractivePercolationVisualizer {
 

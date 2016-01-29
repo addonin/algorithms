@@ -1,5 +1,3 @@
-package part1.week1.assignments.percolation;
-
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
@@ -86,11 +84,11 @@ public class Percolation {
         return uf.connected(virtualTopFlatIndex, virtualBottomFlatIndex);
     }
 
-    void validate(int i, int j) {
+    private void validate(int i, int j) {
         if ((i < 1 || i > N) || (j < 1 || j > N)) throw new IndexOutOfBoundsException();
     }
 
-    int ijToFlatIndex(int i, int j) {
+    private int ijToFlatIndex(int i, int j) {
         return i + j * (N + 1);
     }
 
