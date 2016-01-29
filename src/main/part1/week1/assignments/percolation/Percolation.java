@@ -9,11 +9,11 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
  */
 public class Percolation {
 
-    int N;
-    int virtualTopFlatIndex;
-    int virtualBottomFlatIndex;
-    int[][] sites;
-    WeightedQuickUnionUF uf;
+    private int N;
+    private int virtualTopFlatIndex;
+    private int virtualBottomFlatIndex;
+    private int[][] sites;
+    private WeightedQuickUnionUF uf;
 
     public Percolation(int N) {
         if (N <= 0) throw new IndexOutOfBoundsException();
