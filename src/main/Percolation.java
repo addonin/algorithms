@@ -14,7 +14,7 @@ public class Percolation {
     private WeightedQuickUnionUF uf;
 
     public Percolation(int N) {
-        if (N <= 0) throw new IndexOutOfBoundsException();
+        if (N <= 0) throw new IllegalArgumentException();
         this.N = N;
         this.virtualTopFlatIndex = N;
         this.virtualBottomFlatIndex = N * (N + 1);
