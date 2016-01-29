@@ -7,29 +7,47 @@ import edu.princeton.cs.algs4.StdStats;
  */
 public class PercolationStats {
 
-    private static int[] openFractions;
-
     private int N;
     private int T;
+    private double[] openFractions;
+    private double meanValue = 0;
+    private double stdDevValue = 0;
 
     public PercolationStats(int N, int T) {
         if (N <= 0 || T <= 0) throw new IllegalArgumentException();
         this.N = N;
         this.T = T;
-        openFractions = new int[T];
+        calculateOpenFractions();
+    }
+
+    public static void main(String[] args) {
+
+        int N = Integer.parseInt(args[0]);
+        int T = Integer.parseInt(args[0]);
+        PercolationStats stats = new PercolationStats(N, T);
+
+        System.out.println("mean                    = " + stats.mean());
+        System.out.println("stddev                  = " + stats.stddev());
+        System.out.println("95% confidence interval = " + stats.confidenceLo() + ", " + stats.confidenceHi());
     }
 
     public double mean() {
-        return StdStats.mean(openFractions);
+        if (meanValue == 0) {
+            meanValue = StdStats.mean(openFractions);
+        }
+        return meanValue;
     }
 
     public double stddev() {
-        double counter = 0;
-        double mean = mean();
-        for (int i = 0; i < T; i++) {
-            counter += Math.pow((openFractions[i] - mean), 2);
+        if (stdDevValue == 0) {
+            double counter = 0;
+            double mean = mean();
+            for (int i = 0; i < T; i++) {
+                counter += Math.pow((openFractions[i] - mean), 2);
+            }
+            stdDevValue = Math.sqrt(counter / (T - 1));
         }
-        return Math.sqrt(counter / (T - 1));
+        return stdDevValue;
     }
 
     public double confidenceLo() {
@@ -44,12 +62,8 @@ public class PercolationStats {
         return mean + (1.96 * stddev) / Math.sqrt(T);
     }
 
-    public static void main(String[] args) {
-
-        int N = Integer.parseInt(args[0]);
-        int T = Integer.parseInt(args[0]);
-        PercolationStats stats = new PercolationStats(N, T);
-
+    private void calculateOpenFractions() {
+        openFractions = new double[T];
         for (int k = 0; k < T; k++) {
             Percolation percolation = new Percolation(N);
             while (!percolation.percolates()) {
@@ -67,9 +81,6 @@ public class PercolationStats {
             }
             openFractions[k] = counter;
         }
-
-        System.out.println("mean                    = " + stats.mean());
-        System.out.println("stddev                  = " + stats.stddev());
-        System.out.println("95% confidence interval = " + stats.confidenceLo() + ", " + stats.confidenceHi());
     }
+
 }
