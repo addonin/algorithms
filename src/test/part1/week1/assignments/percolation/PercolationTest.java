@@ -10,12 +10,12 @@ import org.junit.Test;
  */
 public class PercolationTest {
 
-    //private Percolation percolation;
+    //private part1.week1.assignments.percolation.Percolation percolation;
     private WeightedQuickUnionUF uf;
 
     @Before
     public void setUp() throws Exception {
-        //percolation = new Percolation(3);
+        //percolation = new part1.week1.assignments.percolation.Percolation(3);
     }
 
     @Test

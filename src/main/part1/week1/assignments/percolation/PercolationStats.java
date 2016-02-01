@@ -1,3 +1,5 @@
+package part1.week1.assignments.percolation;
+
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 

@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac InteractivePercolationVisualizer.java
  *  Execution:    java InteractivePercolationVisualizer N
- *  Dependencies: PercolationVisualizer.java Percolation.java
+ *  Dependencies: PercolationVisualizer.java part1.week1.assignments.percolation.Percolation.java
  *                StdDraw.java StdOut.java
  *
  *  This program takes the grid size N as a command-line argument.
@@ -13,6 +13,7 @@
 
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+import part1.week1.assignments.percolation.Percolation;
 
 public class InteractivePercolationVisualizer {
 
