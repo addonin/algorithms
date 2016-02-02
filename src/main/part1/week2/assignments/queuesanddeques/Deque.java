@@ -1,4 +1,4 @@
-package part1.week2.assignments.queuesanddequeues;
+package part1.week2.assignments.queuesanddeques;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
