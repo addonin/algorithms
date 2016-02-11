@@ -26,28 +26,32 @@ public class Point implements Comparable<Point> {
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
-    public double slopeTo(Point that) {
-        return (this.y - that.y)/(this.x - that.x);
+    public int compareTo(Point that) {
+        if (this.x == that.x && this.y == that.y) {
+            return 0;
+        } else if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
-    public int compareTo(Point that) {
-        if (this.x < that.x && (this.y < that.y || this.y == that.y)) {
-            return -1;
-        } else if (this.x > that.x && (this.y > that.y || this.y == that.y)) {
-            return 1;
-        } else {
-            return 0;
-        }
+    public double slopeTo(Point that) {
+        int deltaX = this.x - that.x;
+        int deltaY = this.y - that.y;
+        if (deltaX == 0 && deltaY == 0) return Double.NEGATIVE_INFINITY;
+        if (deltaX == 0) return Double.POSITIVE_INFINITY;
+        if (deltaY == 0) return 0.0;
+        return deltaY / deltaX;
     }
 
     public Comparator<Point> slopeOrder() {
         return (p1, p2) -> {
-            double slope1 = slopeTo(p1);
-            double slope2 = slopeTo(p2);
+            double slope1 = Point.this.slopeTo(p1);
+            double slope2 = Point.this.slopeTo(p2);
             return Double.compare(slope1, slope2);
         };
     }
-
 
     public String toString() {
         return "(" + x + ", " + y + ")";
