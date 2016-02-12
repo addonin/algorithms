@@ -14,10 +14,24 @@ public class BruteCollinearPoints {
 
     public BruteCollinearPoints(Point[] points) {
         for (int i = 0; i < points.length; i++) {
-            for (int j = 0; j < points.length; j++) {
-                for (int k = 0; k < points.length; k++) {
-                    for (int l = 0; l < points.length; l++) {
-                        //if (points[i].slopeTo(points[j]) && points[i].slopeTo(points[k]) && points[i].)
+            for (int j = i + 1; j < points.length; j++) {
+                for (int k = j + 1; k < points.length; k++) {
+                    for (int l = k + 1; l < points.length; l++) {
+                        if (i == j || i == k || i == l || j == k || j == l || k == l ) {
+                            continue;
+                        } else {
+                            Point p = points[i];
+                            Point q = points[j];
+                            Point r = points[k];
+                            Point s = points[l];
+                            if (p.compareTo(q) == 0 || p.compareTo(r) == 0 || p.compareTo(s) == 0
+                                    || q.compareTo(r) == 0 || q.compareTo(s) == 0 || r.compareTo(s) == 0) {
+                                throw new IllegalArgumentException();
+                            } else if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(q) == p.slopeTo(s)) {
+                                segments.add(new LineSegment(p, s));
+                                segmentsNumber++;
+                            }
+                        }
                     }
                 }
             }
