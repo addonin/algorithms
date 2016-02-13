@@ -3,7 +3,6 @@ package part1.week3.assignments.pointsonflat;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
-import part1.week3.assignments.pointsonflat.LineSegment;
 
 import java.util.Comparator;
 
