@@ -34,6 +34,8 @@ public class Percolation {
             int i = StdRandom.uniform(1, N + 1);
             int j = StdRandom.uniform(1, N + 1);
 
+            percolation.open(i, j);
+
             for (int k = 1; k <= N; k++) {
                 for (int l = 1; l <= N; l++) {
                     System.out.print(percolation.sites[l][k]);
@@ -41,8 +43,6 @@ public class Percolation {
                 System.out.println("");
             }
             System.out.println("");
-
-            percolation.open(i, j);
         }
     }
 
@@ -53,17 +53,48 @@ public class Percolation {
         int currentFlatIndex = ijToFlatIndex(i, j);
         if (isTopRow(j)) {
             uf.union(currentFlatIndex, virtualTopFlatIndex);
+            if (percolates()) return;
+            if (hasDownstairsNeighbour(i, j)) {
+                uf.union(currentFlatIndex, downstairNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            if (hasLeftNeighbour(i, j)) {
+                uf.union(currentFlatIndex, leftNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            if (hasRightNeighbour(i, j)) {
+                uf.union(currentFlatIndex, rightNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            return;
         } else if (isBottomRow(j)) {
             uf.union(currentFlatIndex, virtualBottomFlatIndex);
+            if (percolates()) return;
+            if (hasUpstairsNeighbour(i, j)) {
+                uf.union(currentFlatIndex, upstairNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            if (hasLeftNeighbour(i, j)) {
+                uf.union(currentFlatIndex, leftNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            if (hasRightNeighbour(i, j)) {
+                uf.union(currentFlatIndex, rightNeighbourFlatIndex(i, j));
+                if (percolates()) return;
+            }
+            return;
         }
         if (hasUpstairsNeighbour(i, j)) {
             uf.union(currentFlatIndex, upstairNeighbourFlatIndex(i, j));
+            if (percolates()) return;
         }
         if (hasDownstairsNeighbour(i, j)) {
             uf.union(currentFlatIndex, downstairNeighbourFlatIndex(i, j));
+            if (percolates()) return;
         }
         if (hasLeftNeighbour(i, j)) {
             uf.union(currentFlatIndex, leftNeighbourFlatIndex(i, j));
+            if (percolates()) return;
         }
         if (hasRightNeighbour(i, j)) {
             uf.union(currentFlatIndex, rightNeighbourFlatIndex(i, j));
