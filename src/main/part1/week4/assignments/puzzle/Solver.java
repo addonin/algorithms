@@ -1,6 +1,7 @@
 package part1.week4.assignments.puzzle;
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
 /**
@@ -9,8 +10,12 @@ import edu.princeton.cs.algs4.StdOut;
  */
 public class Solver {
 
-    public Solver(Board initial) {
+    private Board initial;
+    private MinPQ<Board> pq = new MinPQ<>();
 
+    public Solver(Board initial) {
+        if (initial == null) throw new NullPointerException();
+        this.initial = initial;
     }
 
     public boolean isSolvable() {

@@ -49,22 +49,37 @@ public class Board {
     }
 
     public boolean isGoal() {
+        boolean isGoal = false;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 if (i == N - 1 && j == N - 1 && blocks[i][j] == 0) {
-                    return true;
+                    isGoal = true;
                 } else if (blocks[i][j] != (j + 1) + (i * N)) {
-                    return false;
+                    isGoal = false;
                 }
             }
         }
+        return isGoal;
     }
 
     public Board twin() {
+
         return null;
     }
 
+    @Override
     public boolean equals(Object y) {
+        if (y instanceof Board) {
+            Board that = (Board) y;
+            if (this.N == that.N) {
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        if (this.blocks[i][j] != that.blocks[i][j]) return false;
+                    }
+                }
+                return true;
+            }
+        }
         return false;
     }
 
