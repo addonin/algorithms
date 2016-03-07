@@ -2,6 +2,7 @@ package part1.week4.assignments.puzzle;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
 /**
@@ -27,7 +28,8 @@ public class Solver {
     }
 
     public Iterable<Board> solution() {
-        return null;
+        Stack<Board> boards = new Stack<>();
+        return boards;
     }
 
     public static void main(String[] args) {
