@@ -65,20 +65,16 @@ public class Board {
     }
 
     public Board twin() {
-        int [][] twin = new int[N][N];
+        Board board = new Board(blocks);
         for (int i = 0; i < N; i++) {
-            System.arraycopy(blocks[i], 0, twin[i], 0, N);
+            for (int j = 0; j < N - 1; j++) {
+                if (blocks[i][j] != 0 && blocks[i][j + 1] != 0) {
+                    board.swap(i, j, i, j + 1);
+                    return board;
+                }
+            }
         }
-        if (twin[0][0] != 0 && twin[0][1] != 0) {
-            int temp = twin[0][0];
-            twin[0][0] = twin[0][1];
-            twin[0][1] = temp;
-        } else {
-            int temp = twin[1][0];
-            twin[1][0] = twin[1][1];
-            twin[1][1] = temp;
-        }
-        return null;
+        return board;
     }
 
     @Override
@@ -99,8 +95,45 @@ public class Board {
     }
 
     public Iterable<Board> neighbors() {
-        Stack<Board> neighbours = new Stack<>();
-        return neighbours;
+        int i0 = 0, j0 = 0;
+        boolean found = false;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (blocks[i][j] == 0) {
+                    i0 = i;
+                    j0 = j;
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                break;
+            }
+        }
+
+        Stack<Board> boards = new Stack<Board>();
+        Board board = new Board(blocks);
+        boolean isNeighbor = board.swap(i0, j0, i0 - 1, j0);
+        if (isNeighbor) {
+            boards.push(board);
+        }
+        board = new Board(blocks);
+        isNeighbor = board.swap(i0, j0, i0, j0 - 1);
+        if (isNeighbor) {
+            boards.push(board);
+        }
+        board = new Board(blocks);
+        isNeighbor = board.swap(i0, j0, i0 + 1, j0);
+        if (isNeighbor) {
+            boards.push(board);
+        }
+        board = new Board(blocks);
+        isNeighbor = board.swap(i0, j0, i0, j0 + 1);
+        if (isNeighbor) {
+            boards.push(board);
+        }
+
+        return boards;
     }
 
     public String toString() {
@@ -113,6 +146,16 @@ public class Board {
             s.append("\n");
         }
         return s.toString();
+    }
+
+    private boolean swap(int i, int j, int it, int jt) {
+        if (it < 0 || it >= N || jt < 0 || jt >= N) {
+            return false;
+        }
+        int temp = blocks[i][j];
+        blocks[i][j] = blocks[it][jt];
+        blocks[it][jt] = temp;
+        return true;
     }
 
 }

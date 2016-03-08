@@ -120,7 +120,7 @@
      <!--  PROGRAMMING ASSIGNMENT EXCEPTIONS                                        -->
      <!--  ***********************************************************************  -->
 
-     <Match classregex="Board" >
+     <Match classregex="part1.week4.assignments.puzzle.Board" >
        <BugPattern name="HE_EQUALS_USE_HASHCODE" />
      </Match>
 
